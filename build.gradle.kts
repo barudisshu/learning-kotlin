@@ -1,5 +1,6 @@
 buildscript {
   repositories {
+    gradlePluginPortal()
     mavenLocal()
     google()
     mavenCentral()
@@ -24,6 +25,11 @@ allprojects {
 
 plugins {
   idea
+  id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
+}
+
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+  debug.set(true)
 }
 
 idea {

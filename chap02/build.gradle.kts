@@ -22,10 +22,23 @@ java {
   targetCompatibility = JavaVersion.VERSION_11
 }
 
-tasks.test {
+idea {
+  module.isDownloadJavadoc = true
+  module.isDownloadSources = true
+}
+
+tasks.withType<Test> {
   useJUnitPlatform()
+  testLogging {
+    showStandardStreams = true
+    exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    events("standardOut", "started", "passed", "skipped", "failed")
+  }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-  kotlinOptions.jvmTarget = "11"
+  kotlinOptions {
+    freeCompilerArgs = listOf("-Xjsr305=strict")
+    jvmTarget = "11"
+  }
 }

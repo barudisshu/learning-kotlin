@@ -21,6 +21,11 @@ java {
   targetCompatibility = JavaVersion.VERSION_11
 }
 
+idea {
+  module.isDownloadJavadoc = true
+  module.isDownloadSources = true
+}
+
 tasks.test {
   useJUnitPlatform()
 }
