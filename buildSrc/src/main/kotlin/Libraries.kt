@@ -9,7 +9,8 @@ object Libraries {
     "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlinVersion}"
 
   // Coroutines
-  const val kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutinesVersion}"
+  const val kotlinCoroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutinesVersion}"
+  const val kotlinCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinCoroutinesVersion}"
 
   // json object
   const val jacksonModule = "com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jacksonModuleVersion}"

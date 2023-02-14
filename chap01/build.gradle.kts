@@ -12,11 +12,12 @@ idea {
 
 dependencies {
   implementation(Libraries.kotlinStdLib)
-  implementation(Libraries.kotlinCoroutines)
+  implementation(Libraries.kotlinCoroutinesCore)
   implementation(Libraries.log4j2Api)
   implementation(Libraries.log4j2Core)
   implementation(Libraries.log4j2Impl)
   testImplementation(kotlin("test"))
+  testImplementation(Libraries.kotlinCoroutinesTest)
   testImplementation(Libraries.jupiterApi)
   testImplementation(Libraries.jupiterEngine)
   testImplementation(Libraries.jupiterPlatform)

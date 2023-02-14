@@ -1,7 +1,7 @@
 object Versions {
 
   // Core
-  const val kotlinVersion = "1.7.22"
+  const val kotlinVersion = "1.8.10"
 
   const val kotlinCoroutinesVersion = "1.6.4"
 

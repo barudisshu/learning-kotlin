@@ -16,6 +16,25 @@ data class Tuple<A, B>(var a: A, var b: B) {
   companion object
 }
 
+sealed class Option<out A> {
+  data class Some<A>(val value: A) : Option<A>()
+  object None : Option<Nothing>()
+
+  fun <B> map(func: (A) -> B): Option<B> = when (this) {
+    is Some -> Some(func(this.value))
+    is None -> None
+  }
+
+  fun <B> flatMap(func: (A) -> Option<B>): Option<B> = when (this) {
+    is Some -> func(this.value)
+    is None -> None
+  }
+
+  companion object {
+    fun <A> some(value: A): Option<A> = Some(value)
+    fun <A> none(): Option<A> = None
+  }
+}
 
 sealed class Either<out L, out R> {
   data class Left<L>(val l: L) : Either<L, Nothing>()
@@ -108,17 +127,28 @@ sealed class Free<F, out A> {
     }
 
   @Suppress("UNCHECKED_CAST")
-  tailrec fun <F, A> Functor<F>.resume(free: Free<F, A>): Either<Kind<F, Free<F, A>>, A> = when(free) {
+  tailrec fun <F, A> Functor<F>.resume(free: Free<F, A>): Either<Kind<F, Free<F, A>>, A> = when (free) {
     is Pure -> Either.Right(free.a)
     is Suspend -> Either.Left(this.map(free.fa) { Pure(it) })
-    is FlatMapped<*, *, *> -> when(free.self) {
+    is FlatMapped<*, *, *> -> when (free.self) {
       is Pure -> {
         val a = free.self.a as A
         val f = free.func as (A) -> Free<F, A>
         resume(f(a))
       }
-      is Suspend -> TODO()
-      is FlatMapped<*, *, *> -> TODO()
+
+      is Suspend -> {
+        val fa = free.self.fa as Kind<F, A>
+        val f = free.func as (A) -> Free<F, A>
+        Either.Left(this.map(fa, f))
+      }
+
+      is FlatMapped<*, *, *> -> {
+        val next = free.self.self as Free<F, A>
+        val g = free.self.func as (A) -> Free<F, A>
+        val f = free.func as (A) -> Free<F, A>
+        resume(next.flatMap { g(it).flatMap(f) })
+      }
     }
   }
 
