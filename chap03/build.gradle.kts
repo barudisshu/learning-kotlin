@@ -1,37 +1,3 @@
 plugins {
-  kotlin("jvm")
-  idea
-  java
-  application
+  id("kotlin-library-conventions")
 }
-
-dependencies {
-  implementation(Libraries.kotlinStdLib)
-  implementation(Libraries.jacksonModule)
-  implementation(Libraries.log4j2Api)
-  implementation(Libraries.log4j2Core)
-  implementation(Libraries.log4j2Impl)
-  testImplementation(kotlin("test"))
-  testImplementation(Libraries.jupiterApi)
-  testImplementation(Libraries.jupiterEngine)
-  testImplementation(Libraries.jupiterPlatform)
-}
-
-java {
-  sourceCompatibility = JavaVersion.VERSION_11
-  targetCompatibility = JavaVersion.VERSION_11
-}
-
-idea {
-  module.isDownloadJavadoc = true
-  module.isDownloadSources = true
-}
-
-tasks.test {
-  useJUnitPlatform()
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-  kotlinOptions.jvmTarget = "11"
-}
-

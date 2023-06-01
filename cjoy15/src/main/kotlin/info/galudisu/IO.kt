@@ -1,6 +1,6 @@
 package info.galudisu
 
-interface Semigroup<A> {
+fun interface Semigroup<A> {
   fun combine(x: A, y: A): A
 }
 
@@ -8,7 +8,7 @@ interface Monoid<A> : Semigroup<A> {
   fun empty(): A
 }
 
-interface Kind<F, out T> {
+fun interface Kind<F, out T> {
   operator fun invoke(func: F): T
 }
 

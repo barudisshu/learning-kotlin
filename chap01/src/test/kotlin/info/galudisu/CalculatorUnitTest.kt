@@ -25,7 +25,7 @@ class CalculatorUnitTest {
     Assertions.assertAll(
       Executable { Assertions.assertEquals(1, calculator.square(1)) },
       Executable { Assertions.assertEquals(4, calculator.square(2)) },
-      Executable { Assertions.assertEquals(9, calculator.square(3)) }
+      Executable { Assertions.assertEquals(9, calculator.square(3)) },
     )
   }
 
@@ -33,7 +33,7 @@ class CalculatorUnitTest {
   fun testSquaresFactory() = listOf(
     DynamicTest.dynamicTest("when I calculate 1^2 then I get 1") { Assertions.assertEquals(1, calculator.square(1)) },
     DynamicTest.dynamicTest("when I calculate 2^2 then I get 4") { Assertions.assertEquals(4, calculator.square(2)) },
-    DynamicTest.dynamicTest("when I calculate 3^2 then I get 9") { Assertions.assertEquals(9, calculator.square(3)) }
+    DynamicTest.dynamicTest("when I calculate 3^2 then I get 9") { Assertions.assertEquals(9, calculator.square(3)) },
   )
 
   @TestFactory
@@ -42,7 +42,7 @@ class CalculatorUnitTest {
     2 to 4,
     3 to 9,
     4 to 16,
-    5 to 25
+    5 to 25,
   )
     .map { (input, expected) ->
       DynamicTest.dynamicTest("when I calculate $input^2 then I get $expected") {
@@ -55,7 +55,7 @@ class CalculatorUnitTest {
     2 to 4,
     3 to 9,
     4 to 16,
-    5 to 25
+    5 to 25,
   )
 
   @TestFactory
@@ -76,7 +76,7 @@ class CalculatorUnitTest {
 
   @Tags(
     Tag("slow"),
-    Tag("logarithms")
+    Tag("logarithms"),
   )
   @Test
   fun `Log to base 2 of 8 should be equal to 3`() {

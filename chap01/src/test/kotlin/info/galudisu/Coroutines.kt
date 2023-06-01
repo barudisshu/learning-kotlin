@@ -34,7 +34,7 @@ class Coroutines {
   private suspend fun bathTime() {
     // Continuation = data structure stores all local context
     logger.info("going to the bathroom")
-    delay(500L)  // suspends/"blocks" the computation
+    delay(500L) // suspends/"blocks" the computation
     // Continuation restored here
     logger.info("Bath done, exiting")
   }
@@ -54,9 +54,8 @@ class Coroutines {
     logger.info("Water boiled")
   }
 
-
   private suspend fun sequentialMorningRoutine() {
-    coroutineScope {  // start a "context" for coroutines
+    coroutineScope { // start a "context" for coroutines
       bathTime()
       // add more code, including suspend functions
       // parallel code here. all needs to finish before the scope is closed
@@ -77,7 +76,7 @@ class Coroutines {
 
   private suspend fun concurrentMorningRoutine() {
     coroutineScope {
-      launch { bathTime() }  // this coroutine is a CHILD of the coroutineScope
+      launch { bathTime() } // this coroutine is a CHILD of the coroutineScope
       launch { boilingWater() }
     }
   }
@@ -144,7 +143,7 @@ class Coroutines {
   /** return value fro coroutines */
   private suspend fun prepareBreakfast() {
     coroutineScope {
-      val coffee = async { preparingJavaCoffee() }  // Deferred = analogous to the Future[T], in a new thread
+      val coffee = async { preparingJavaCoffee() } // Deferred = analogous to the Future[T], in a new thread
       val toast = async { toastingBread() }
       // semantic blocking
       val finalCoffee = coffee.await()
@@ -210,7 +209,6 @@ class Coroutines {
     }
     delay(100L)
     logger.info("Work done")
-
   }
 
   suspend fun workNicelyRoutine() {
@@ -223,7 +221,6 @@ class Coroutines {
         takeABreak()
       }
     }
-
   }
 
   //  @Test
@@ -243,14 +240,13 @@ class Coroutines {
 
   // cancellation, cancel a coroutine while it is running
 
-
   suspend fun forgettingFriendBirthdayRoutine() {
     coroutineScope {
       val workingJob = launch { workingNicely() }
       launch {
         delay(2000L) // after 2s I remember I have a birthday today
-        workingJob.cancel()  // sends a SIGNAL to the coroutine to cancel, cancellation happens at first yielding point
-        workingJob.join()  // you are sure that the coroutine has been cancelled
+        workingJob.cancel() // sends a SIGNAL to the coroutine to cancel, cancellation happens at first yielding point
+        workingJob.join() // you are sure that the coroutine has been cancelled
         logger.info("I forgot my friend's birthday! Buying a present now!")
       }
     }
@@ -272,8 +268,8 @@ class Coroutines {
       launch {
         delay(2000L) // after 2s I remember I have a birthday today
         logger.info("Trying to stop working... ")
-        workingJob.cancel()  // sends a SIGNAL to the coroutine to cancel, cancellation happens at first yielding point (NEVER)
-        workingJob.join()  // you are sure that the coroutine has been cancelled
+        workingJob.cancel() // sends a SIGNAL to the coroutine to cancel, cancellation happens at first yielding point (NEVER)
+        workingJob.join() // you are sure that the coroutine has been cancelled
         logger.info("I forgot my friend's birthday! Buying a present now!")
       }
     }
@@ -300,7 +296,7 @@ class Coroutines {
         }
       }
       // can also define your own "cleanup" code in case of completion
-      workingJob.invokeOnCompletion { _: Throwable? ->  // callback
+      workingJob.invokeOnCompletion { _: Throwable? -> // callback
         // can handle completion and cancellation differently, depending on the exception
         logger.info("Make sure I talk to my colleagues that I'll be out for 30 mins")
       }
@@ -308,8 +304,8 @@ class Coroutines {
       launch {
         delay(2000L) // after 2s I remember I have a birthday today
         logger.info("Trying to stop working... ")
-        workingJob.cancel()  // sends a SIGNAL to the coroutine to cancel, cancellation happens at first yielding point (NEVER)
-        workingJob.join()  // you are sure that the coroutine has been cancelled
+        workingJob.cancel() // sends a SIGNAL to the coroutine to cancel, cancellation happens at first yielding point (NEVER)
+        workingJob.join() // you are sure that the coroutine has been cancelled
         logger.info("I forgot my friend's birthday! Buying a present now!")
       }
     }
@@ -341,8 +337,8 @@ class Coroutines {
       }
       launch {
         delay(2000L) // after 2s I remember I have a birthday today
-        workingJob.cancel()  // sends a SIGNAL to the coroutine to cancel, cancellation happens at first yielding point
-        workingJob.join()  // you are sure that the coroutine has been cancelled
+        workingJob.cancel() // sends a SIGNAL to the coroutine to cancel, cancellation happens at first yielding point
+        workingJob.join() // you are sure that the coroutine has been cancelled
         logger.info("I forgot my friend's birthday! Buying a present now!")
       }
     }

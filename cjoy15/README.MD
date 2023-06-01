@@ -15,7 +15,6 @@ Why contravariance is hard to understand?
 
 ## The IO Monad
 
-
 ## The difference between Scala(3) and Kotlin
 
 |               | Kotlin            | Scala            | description                                                                                   | Why                                                                                    |
