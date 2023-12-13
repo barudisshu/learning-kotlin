@@ -11,22 +11,25 @@ class Lazy<out A>(function: () -> A) : () -> A {
   fun <B> flatMap(f: (A) -> Lazy<B>): Lazy<B> = Lazy { f(value)() }
 
   fun forEach(condition: Boolean, ifTrue: (A) -> Unit, ifFalse: () -> Unit = {}) =
-    if (condition)
+    if (condition) {
       ifTrue(value)
-    else
+    } else {
       ifFalse()
+    }
 
   fun forEach(condition: Boolean, ifTrue: () -> Unit = {}, ifFalse: (A) -> Unit) =
-    if (condition)
+    if (condition) {
       ifTrue()
-    else
+    } else {
       ifFalse(value)
+    }
 
   fun forEach(condition: Boolean, ifTrue: (A) -> Unit, ifFalse: (A) -> Unit) =
-    if (condition)
+    if (condition) {
       ifTrue(value)
-    else
+    } else {
       ifFalse(value)
+    }
 
   companion object {
 
@@ -38,7 +41,6 @@ class Lazy<out A>(function: () -> A) : () -> A {
       }
   }
 }
-
 
 fun <A> sequence(lst: List<Lazy<A>>): Lazy<List<A>> = Lazy { lst.map { it() } }
 

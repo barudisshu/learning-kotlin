@@ -60,7 +60,6 @@ sealed class Heap<out A> {
     override fun get(index: Int): Result<A> = Result.failure(NoSuchElementException("Index out of bounds"))
 
     override fun pop(): Option<Pair<A, Heap<A>>> = Option()
-
   }
 
   internal class H<out A>(
@@ -69,7 +68,7 @@ sealed class Heap<out A> {
     private val hd: A,
     private val rght: Heap<A>,
     override val comparator: Result<Comparator<@UnsafeVariance A>> =
-      lft.comparator.orElse { rght.comparator }
+      lft.comparator.orElse { rght.comparator },
   ) : Heap<A>() {
 
     override val isEmpty: Boolean = false
@@ -118,9 +117,10 @@ sealed class Heap<out A> {
       }
 
     fun <A> merge(
-      first: Heap<A>, second: Heap<A>,
+      first: Heap<A>,
+      second: Heap<A>,
       comparator: Result<Comparator<A>> =
-        first.comparator.orElse { second.comparator }
+        first.comparator.orElse { second.comparator },
     ): Heap<A> =
       first.head.flatMap { fh ->
         second.head.flatMap { sh ->
@@ -142,7 +142,7 @@ sealed class Heap<out A> {
         when (first) {
           is Empty -> second
           else -> first
-        }
+        },
       )
 
     private fun <A> compare(first: A, second: A, comparator: Result<Comparator<A>>): Int =

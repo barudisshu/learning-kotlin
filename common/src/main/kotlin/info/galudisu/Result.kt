@@ -40,7 +40,9 @@ sealed class Result<out A> : Serializable {
   fun exists(p: (A) -> Boolean): Boolean = map(p).getOrElse(false)
   abstract fun mapFailure(message: String): Result<A>
   abstract fun forEach(
-    onSuccess: (A) -> Unit = {}, onFailure: (RuntimeException) -> Unit = {}, onEmpty: () -> Unit = {}
+    onSuccess: (A) -> Unit = {},
+    onFailure: (RuntimeException) -> Unit = {},
+    onEmpty: () -> Unit = {},
   )
 
   internal class Failure<out A>(internal val exception: RuntimeException) : Result<A>() {
@@ -55,13 +57,15 @@ sealed class Result<out A> : Serializable {
     override fun mapFailure(message: String): Result<A> = Failure(RuntimeException(message, exception))
 
     override fun forEach(
-      onSuccess: (A) -> Unit, onFailure: (RuntimeException) -> Unit, onEmpty: () -> Unit
+      onSuccess: (A) -> Unit,
+      onFailure: (RuntimeException) -> Unit,
+      onEmpty: () -> Unit,
     ) = onFailure(exception)
 
     override fun toString(): String = "Failure(${exception.message})"
   }
 
-  internal class Success<out A>(internal val value: A) : Result<A>() {
+  class Success<out A>(internal val value: A) : Result<A>() {
     override fun mapEmpty(): Result<Nothing> = failure("Not empty")
 
     override fun <B> map(f: (A) -> B): Result<B> = try {
@@ -90,7 +94,10 @@ sealed class Result<out A> : Serializable {
     override fun toString(): String = "Success($value)"
   }
 
-  internal object Empty : Result<Nothing>() {
+  internal data object Empty : Result<Nothing>() {
+
+    private fun readResolve(): Any = Empty
+
     override fun mapEmpty(): Result<Any> = Result(Any())
 
     override fun <B> map(f: (Nothing) -> B): Result<B> = Empty
@@ -102,13 +109,14 @@ sealed class Result<out A> : Serializable {
     override fun mapFailure(message: String): Result<Nothing> = this
 
     override fun forEach(
-      onSuccess: (Nothing) -> Unit, onFailure: (RuntimeException) -> Unit, onEmpty: () -> Unit
+      onSuccess: (Nothing) -> Unit,
+      onFailure: (RuntimeException) -> Unit,
+      onEmpty: () -> Unit,
     ) = onEmpty()
-
-    override fun toString(): String = "Empty"
   }
 
   companion object {
+
     operator fun <A> invoke(a: A? = null): Result<A> = when (a) {
       null -> Failure(NullPointerException())
       else -> Success(a)
@@ -151,8 +159,11 @@ sealed class Result<out A> : Serializable {
     }
 
     fun <T> of(predicate: (T) -> Boolean, value: T, message: String): Result<T> = try {
-      if (predicate(value)) Result(value)
-      else failure("Assertion failed for value $value with message: $message")
+      if (predicate(value)) {
+        Result(value)
+      } else {
+        failure("Assertion failed for value $value with message: $message")
+      }
     } catch (e: Exception) {
       failure(IllegalArgumentException("Exception while validating $value", e))
     }
@@ -164,10 +175,7 @@ fun <A, B> lift1(f: (A) -> B): (Result<A>) -> Result<B> = { it.map(f) }
 fun <A, B, C> lift2(f: (A) -> (B) -> C): (Result<A>) -> (Result<B>) -> Result<C> =
   { a -> { b -> a.map(f).flatMap { b.map(it) } } }
 
-
 fun <A, B, C, D> lift3(f: (A) -> (B) -> (C) -> D): (Result<A>) -> (Result<B>) -> (Result<C>) -> Result<D> =
   { a -> { b -> { c -> a.map(f).flatMap { b.map(it) }.flatMap { c.map(it) } } } }
 
 fun <A, B, C> map2(a: Result<A>, b: Result<B>, f: (A) -> (B) -> C): Result<C> = lift2(f)(a)(b)
-
-

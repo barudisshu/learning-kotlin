@@ -1,10 +1,8 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 repositories {
-  maven {
-    url = uri("arm.lmera.ericsson.se")
-  }
   gradlePluginPortal()
   mavenLocal()
   google()
@@ -73,6 +71,10 @@ kotlin {
     languageSettings {
       languageVersion = "2.0"
     }
+  }
+  compilerOptions {
+    languageVersion.set(KotlinVersion.KOTLIN_2_0)
+    apiVersion.set(KotlinVersion.KOTLIN_2_0)
   }
 }
 

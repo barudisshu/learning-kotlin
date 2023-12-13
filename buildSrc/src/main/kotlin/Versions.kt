@@ -1,7 +1,7 @@
 object Versions {
 
   // Core
-  const val KOTLIN_VERSION = "1.9.20"
+  const val KOTLIN_VERSION = "1.9.21"
 
   const val KOTLIN_COROUTINES_VERSION = "1.7.3"
 

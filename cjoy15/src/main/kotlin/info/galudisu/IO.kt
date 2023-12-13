@@ -18,7 +18,7 @@ data class Tuple<A, B>(var a: A, var b: B) {
 
 sealed class Option<out A> {
   data class Some<A>(val value: A) : Option<A>()
-  object None : Option<Nothing>()
+  data object None : Option<Nothing>()
 
   fun <B> map(func: (A) -> B): Option<B> = when (this) {
     is Some -> Some(func(this.value))
@@ -42,7 +42,7 @@ sealed class Either<out L, out R> {
 
   inline fun <L, R, reified T> Either<L, R>.map(
     lft: (L) -> T,
-    rgt: (R) -> T
+    rgt: (R) -> T,
   ): T =
     when (this) {
       is Left -> lft(l)
@@ -51,7 +51,7 @@ sealed class Either<out L, out R> {
 
   inline fun <L, R, reified T> Either<L, R>.flatMap(
     lft: (L) -> Either<L, T>,
-    rgt: (R) -> Either<R, T>
+    rgt: (R) -> Either<R, T>,
   ) = when (this) {
     is Left -> lft(l)
     is Right -> rgt(r)
@@ -165,7 +165,6 @@ sealed class Free<F, out A> {
   }
 }
 
-
 /**
  * stack-safe IO
  */
@@ -221,13 +220,7 @@ sealed class IO<out A> {
   companion object {
     val empty: IO<Unit> = IO.Effect { Unit }
     internal fun <A> unit(a: A): IO<A> = IO.Effect { a }
-
   }
 }
 
-
-/////////////////////////////////////////////////////////
-
-
-
-
+// ///////////////////////////////////////////////////////
