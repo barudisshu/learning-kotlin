@@ -15,6 +15,7 @@ plugins {
   checkstyle
   id("com.github.spotbugs")
   id("org.jetbrains.kotlin.jvm")
+  id("org.jlleitschuh.gradle.ktlint")
 }
 
 java {
@@ -89,4 +90,15 @@ tasks.withType<Test> {
 idea {
   module.isDownloadJavadoc = true
   module.isDownloadSources = true
+}
+
+ktlint {
+  android = true
+  ignoreFailures = false
+  enableExperimentalRules = true
+  filter {
+    include("**/kotlin/**")
+    exclude("**/generated/**")
+    exclude("**/test/**")
+  }
 }

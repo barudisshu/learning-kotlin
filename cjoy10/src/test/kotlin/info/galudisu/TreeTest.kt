@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 
 class TreeTest {
-
   @Test
   fun `Balance Tree`() {
     val a = Tree<Int>() + 5 + 2 + 8

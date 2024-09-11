@@ -13,4 +13,3 @@ fun findTheOldest(people: List<Person>): Person? {
   }
   return theOldest
 }
-

@@ -25,13 +25,19 @@ class Parser(reader: Reader, val rootObject: JsonObject) {
     }
   }
 
-  private fun parseArrayBody(currentObject: JsonObject, propName: String) {
+  private fun parseArrayBody(
+    currentObject: JsonObject,
+    propName: String,
+  ) {
     parseCommaSeparated(Token.RBRACKET) { token ->
       parsePropertyValue(currentObject, propName, token)
     }
   }
 
-  private fun parseCommaSeparated(stopToken: Token, body: (Token) -> Unit) {
+  private fun parseCommaSeparated(
+    stopToken: Token,
+    body: (Token) -> Unit,
+  ) {
     var expectComma = false
     while (true) {
       var token = nextToken()
@@ -47,7 +53,11 @@ class Parser(reader: Reader, val rootObject: JsonObject) {
     }
   }
 
-  private fun parsePropertyValue(currentObject: JsonObject, propName: String, token: Token) {
+  private fun parsePropertyValue(
+    currentObject: JsonObject,
+    propName: String,
+    token: Token,
+  ) {
     when (token) {
       is Token.ValueToken ->
         currentObject.setSimpleProperty(propName, token.value)

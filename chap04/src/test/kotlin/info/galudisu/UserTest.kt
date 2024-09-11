@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class UserTest {
-
   @Test
   fun `Accessing the backing field in a setter`() {
     val user = User("Alice")

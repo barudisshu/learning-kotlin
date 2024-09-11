@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 
 internal class TypeSystemTest {
-
   @Test
   fun `Using safe calls to deal with nullable properties`() {
     val ceo = Employee("Da Boss", null)

@@ -1,10 +1,11 @@
 package info.galudisu
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 internal class PersonTest {
-
   @Test
   fun `searching through a collection using a lambda`() {
     val people = listOf(Person("Alice", 27), Person("Bob", 31), Person("Carol", 31))
@@ -22,7 +23,13 @@ internal class PersonTest {
   @Test
   fun `eager(collection) and lazy(sequence)`() {
     val people = listOf(Person("Alice", 29), Person("Bob", 31), Person("Charles", 31), Person("Dan", 21))
-    assertEquals(listOf("Bob", "Dan"), people.asSequence().map(Person::name).filter { it.length < 4 }.toList())
+    assertEquals(
+      listOf("Bob", "Dan"),
+      people
+        .asSequence()
+        .map(Person::name)
+        .filter { it.length < 4 }
+        .toList(),
+    )
   }
 }
-

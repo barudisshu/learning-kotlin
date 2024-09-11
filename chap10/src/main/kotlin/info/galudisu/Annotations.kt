@@ -10,6 +10,7 @@ annotation class JsonName(val name: String)
 
 interface ValueSerializer<T> {
   fun toJsonValue(value: T): Any?
+
   fun fromJsonValue(jsonValue: Any?): T
 }
 

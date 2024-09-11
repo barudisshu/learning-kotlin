@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 internal class CaseInsensitiveFileComparatorTest {
-
   @Test
   fun `implementing Comparator with an object`() {
     val files = listOf(File("/Z"), File("/a"))
@@ -13,4 +12,3 @@ internal class CaseInsensitiveFileComparatorTest {
     assertEquals(2, comparator.size)
   }
 }
-

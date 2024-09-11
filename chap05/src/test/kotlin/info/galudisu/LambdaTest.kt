@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertContains
 
 class LambdaTest {
-
   @Test
   fun `lambda with receivers - with`() {
     assertContains(alphabet1(), "alphabet")

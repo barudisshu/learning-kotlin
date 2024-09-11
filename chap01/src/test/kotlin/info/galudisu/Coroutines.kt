@@ -1,6 +1,18 @@
 package info.galudisu
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
@@ -12,7 +24,6 @@ import java.util.concurrent.Executors
 
 @ExperimentalCoroutinesApi
 class Coroutines {
-
   companion object {
     val logger: Logger = LoggerFactory.getLogger(Coroutines::class.java)
 
@@ -289,12 +300,13 @@ class Coroutines {
   suspend fun forgettingFriendBirthdayRoutineWithResource() {
     val desk = Desk()
     coroutineScope {
-      val workingJob = launch {
-        // use the resource here
-        desk.use { _ -> // this resource will be closed upon completion of the coroutine
-          workingNicely()
+      val workingJob =
+        launch {
+          // use the resource here
+          desk.use { _ -> // this resource will be closed upon completion of the coroutine
+            workingNicely()
+          }
         }
-      }
       // can also define your own "cleanup" code in case of completion
       workingJob.invokeOnCompletion { _: Throwable? -> // callback
         // can handle completion and cancellation differently, depending on the exception
@@ -330,11 +342,12 @@ class Coroutines {
 
   suspend fun forgettingFriendBirthdayRoutineStayHydrated() {
     coroutineScope {
-      val workingJob = launch {
-        // child coroutines
-        launch { workingNicely() }
-        launch { drinkWater() }
-      }
+      val workingJob =
+        launch {
+          // child coroutines
+          launch { workingNicely() }
+          launch { drinkWater() }
+        }
       launch {
         delay(2000L) // after 2s I remember I have a birthday today
         workingJob.cancel() // sends a SIGNAL to the coroutine to cancel, cancellation happens at first yielding point

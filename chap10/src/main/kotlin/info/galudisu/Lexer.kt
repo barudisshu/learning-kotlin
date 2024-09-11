@@ -4,10 +4,15 @@ import java.io.Reader
 
 interface Token {
   object COMMA : Token
+
   object COLON : Token
+
   object LBRACE : Token
+
   object RBRACE : Token
+
   object LBRACKET : Token
+
   object RBRACKET : Token
 
   interface ValueToken : Token {
@@ -20,8 +25,11 @@ interface Token {
   }
 
   data class BoolValue(override val value: Boolean) : ValueToken
+
   data class StringValue(override val value: String) : ValueToken
+
   data class LongValue(override val value: Long) : ValueToken
+
   data class DoubleValue(override val value: Double) : ValueToken
 
   companion object {
@@ -65,13 +73,17 @@ internal class CharReader(private val reader: Reader) {
     return String(tokenBuffer, 0, length)
   }
 
-  fun expectText(text: String, followedBy: Set<Char>) {
+  fun expectText(
+    text: String,
+    followedBy: Set<Char>,
+  ) {
     if (readNextChars(text.length) != text) {
       throw MalformedJSONException("Expected text $text")
     }
     val next = peekNext()
-    if (next != null && next !in followedBy)
+    if (next != null && next !in followedBy) {
       throw MalformedJSONException("Expected text in $followedBy")
+    }
   }
 }
 
@@ -82,23 +94,33 @@ class Lexer(reader: Reader) {
     private val valueEndChars = setOf(',', '}', ']', ' ', '\t', '\r', '\n')
   }
 
-  private val tokenMap = hashMapOf<Char, (Char) -> Token>(
-    ',' to { Token.COMMA },
-    '{' to { Token.LBRACE },
-    '}' to { Token.RBRACE },
-    '[' to { Token.LBRACKET },
-    ']' to { Token.RBRACKET },
-    ':' to { Token.COLON },
-    't' to { charReader.expectText("rue", valueEndChars); Token.TRUE },
-    'f' to { charReader.expectText("alse", valueEndChars); Token.FALSE },
-    'n' to { charReader.expectText("ull", valueEndChars); Token.NullValue },
-    '"' to { readStringToken() },
-    '-' to { readNumberToken(it) }
-  ).apply {
-    for (i in '0'..'9') {
-      this[i] = { c -> readNumberToken(c) }
+  private val tokenMap =
+    hashMapOf<Char, (Char) -> Token>(
+      ',' to { Token.COMMA },
+      '{' to { Token.LBRACE },
+      '}' to { Token.RBRACE },
+      '[' to { Token.LBRACKET },
+      ']' to { Token.RBRACKET },
+      ':' to { Token.COLON },
+      't' to {
+        charReader.expectText("rue", valueEndChars)
+        Token.TRUE
+      },
+      'f' to {
+        charReader.expectText("alse", valueEndChars)
+        Token.FALSE
+      },
+      'n' to {
+        charReader.expectText("ull", valueEndChars)
+        Token.NullValue
+      },
+      '"' to { readStringToken() },
+      '-' to { readNumberToken(it) },
+    ).apply {
+      for (i in '0'..'9') {
+        this[i] = { c -> readNumberToken(c) }
+      }
     }
-  }
 
   fun nextToken(): Token? {
     var c: Char?

@@ -6,7 +6,7 @@ import kotlin.reflect.full.memberProperties
 
 fun serialize(obj: Any): String = buildString { serializeObject(obj) }
 
-/* the first implementation discussed in the book */
+// the first implementation discussed in the book
 private fun StringBuilder.serializeObjectWithoutAnnotation(obj: Any) {
   val kClass = obj.javaClass.kotlin
   val properties = kClass.memberProperties
@@ -27,7 +27,8 @@ private fun StringBuilder.serializeObject(obj: Any) {
 }
 
 private fun StringBuilder.serializeProperty(
-  prop: KProperty1<Any, *>, obj: Any
+  prop: KProperty1<Any, *>,
+  obj: Any,
 ) {
   val jsonNameAnn = prop.findAnnotation<JsonName>()
   val propName = jsonNameAnn?.name ?: prop.name
@@ -43,8 +44,9 @@ fun KProperty<*>.getSerializer(): ValueSerializer<Any?>? {
   val customSerializerAnn = findAnnotation<CustomSerializer>() ?: return null
   val serializerClass = customSerializerAnn.serializerClass
 
-  val valueSerializer = serializerClass.objectInstance
-    ?: serializerClass.createInstance()
+  val valueSerializer =
+    serializerClass.objectInstance
+      ?: serializerClass.createInstance()
   @Suppress("UNCHECKED_CAST")
   return valueSerializer as ValueSerializer<Any?>
 }

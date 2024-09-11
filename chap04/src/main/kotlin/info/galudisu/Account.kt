@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.readValue
 
-
-class Account constructor(@JsonProperty("name") val name: String) {
-
+class Account constructor(
+  @JsonProperty("name") val name: String,
+) {
   object MAPPER : ObjectMapper()
 
   init {

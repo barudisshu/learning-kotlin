@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SimpleUnitTest {
-
   @Test
   fun `isEmpty should return true for empty lists`() {
     val list = listOf<String>()

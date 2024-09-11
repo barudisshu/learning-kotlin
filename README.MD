@@ -1,8 +1,9 @@
 # Kotlin Study
 
 - Basic theory
-- Coroutines
-- Functional program
+- Coroutines (corXX)
+- Functional program (cjoyXX)
+- Enterprise Application Architecture(PoEXX)
 
 
 ## receive feature

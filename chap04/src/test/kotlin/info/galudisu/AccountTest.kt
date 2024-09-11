@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class AccountTest {
-
   @Test
   fun `declaring a named companion object`() {
     val account1 = Account.Loader.fromJSON("""{"name": "Dmitry"}""".trimIndent())

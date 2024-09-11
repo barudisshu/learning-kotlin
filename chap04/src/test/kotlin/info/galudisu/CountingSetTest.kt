@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class CountingSetTest {
-
   @Test
   fun `using class delegation`() {
     val cset = CountingSet<Int>()
@@ -14,4 +13,3 @@ internal class CountingSetTest {
     assertEquals(2, cset.size)
   }
 }
-

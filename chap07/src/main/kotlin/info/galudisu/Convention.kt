@@ -10,6 +10,7 @@ import kotlin.reflect.KProperty
 
 open class PropertyChangeAware {
   protected val changeSupport = PropertyChangeSupport(this)
+
   fun addPropertyChangeListener(listener: PropertyChangeListener) {
     changeSupport.addPropertyChangeListener(listener)
   }
@@ -19,7 +20,11 @@ open class PropertyChangeAware {
   }
 }
 
-class Person(val name: String, age: Int, salary: Int) : PropertyChangeAware() {
+class Person(
+  val name: String,
+  age: Int,
+  salary: Int,
+) : PropertyChangeAware() {
   private val observer = { prop: KProperty<*>, oldValue: Int, newValue: Int ->
     changeSupport.firePropertyChange(prop.name, oldValue, newValue)
   }
@@ -27,23 +32,27 @@ class Person(val name: String, age: Int, salary: Int) : PropertyChangeAware() {
   var salary: Int by Delegates.observable(salary, observer)
 }
 
-
 class Contact {
-  private val _attributes = hashMapOf<String, String>()
-  fun setAttribute(attrName: String, value: String) {
-    _attributes[attrName] = value
+  private val attributes = hashMapOf<String, String>()
+
+  fun setAttribute(
+    attrName: String,
+    value: String,
+  ) {
+    attributes[attrName] = value
   }
 
-  val name: String by _attributes
+  val name: String by attributes
 }
-
 
 object Users : IntIdTable() {
   val name = varchar("name", length = 50).index()
   val age = integer("age")
 }
 
-class User(id: EntityID<Int>) : IntEntity(id) {
+class User(
+  id: EntityID<Int>,
+) : IntEntity(id) {
   var name: String by Users.name
   var age: Int by Users.age
 }

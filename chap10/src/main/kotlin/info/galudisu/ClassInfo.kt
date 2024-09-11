@@ -9,8 +9,9 @@ import kotlin.reflect.jvm.javaType
 
 class ClassInfo<T : Any>(cls: KClass<T>) {
   private val className = cls.qualifiedName
-  private val constructor = cls.primaryConstructor
-    ?: throw JKidException("Class ${cls.qualifiedName} doesn't have a primary constructor")
+  private val constructor =
+    cls.primaryConstructor
+      ?: throw JKidException("Class ${cls.qualifiedName} doesn't have a primary constructor")
 
   private val jsonNameToParamMap = hashMapOf<String, KParameter>()
   private val paramToSerializerMap = hashMapOf<KParameter, ValueSerializer<out Any?>>()
@@ -20,9 +21,13 @@ class ClassInfo<T : Any>(cls: KClass<T>) {
     constructor.parameters.forEach { cacheDataForParameter(cls, it) }
   }
 
-  private fun cacheDataForParameter(cls: KClass<*>, param: KParameter) {
-    val paramName = param.name
-      ?: throw JKidException("Class $className has constructor parameter without name")
+  private fun cacheDataForParameter(
+    cls: KClass<*>,
+    param: KParameter,
+  ) {
+    val paramName =
+      param.name
+        ?: throw JKidException("Class $className has constructor parameter without name")
 
     val property = cls.declaredMemberProperties.find { it.name == paramName } ?: return
     val name = property.findAnnotation<JsonName>()?.name ?: paramName
@@ -31,18 +36,23 @@ class ClassInfo<T : Any>(cls: KClass<T>) {
     val deserializeClass = property.findAnnotation<DeserializeInterface>()?.targetClass?.java
     jsonNameToDeserializeClassMap[name] = deserializeClass
 
-    val valueSerializer = property.getSerializer()
-      ?: serializerForType(param.type.javaType)
-      ?: return
+    val valueSerializer =
+      property.getSerializer()
+        ?: serializerForType(param.type.javaType)
+        ?: return
     paramToSerializerMap[param] = valueSerializer
   }
 
-  fun getConstructorParameter(propertyName: String): KParameter = jsonNameToParamMap[propertyName]
-    ?: throw JKidException("Constructor parameter $propertyName is not found for class $className")
+  fun getConstructorParameter(propertyName: String): KParameter =
+    jsonNameToParamMap[propertyName]
+      ?: throw JKidException("Constructor parameter $propertyName is not found for class $className")
 
   fun getDeserializeClass(propertyName: String) = jsonNameToDeserializeClassMap[propertyName]
 
-  fun deserializeConstructorArgument(param: KParameter, value: Any?): Any? {
+  fun deserializeConstructorArgument(
+    param: KParameter,
+    value: Any?,
+  ): Any? {
     val serializer = paramToSerializerMap[param]
     if (serializer != null) return serializer.fromJsonValue(value)
 
@@ -50,14 +60,17 @@ class ClassInfo<T : Any>(cls: KClass<T>) {
     return value
   }
 
-  private fun validateArgumentType(param: KParameter, value: Any?) {
+  private fun validateArgumentType(
+    param: KParameter,
+    value: Any?,
+  ) {
     if (value == null && !param.type.isMarkedNullable) {
       throw JKidException("Received null value for non-null parameter ${param.name}")
     }
     if (value != null && value.javaClass != param.type.javaType) {
       throw JKidException(
         "Type mismatch for parameter ${param.name}: " +
-          "expected ${param.type.javaType}, found ${value.javaClass}"
+          "expected ${param.type.javaType}, found ${value.javaClass}",
       )
     }
   }

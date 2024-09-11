@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class ConventionTest {
-
   @Test
   fun `Using Delegates's observable to implement property change notification`() {
     val p = Person("Dmitry", 34, 2000)
@@ -29,4 +28,3 @@ internal class ConventionTest {
     assertEquals("Dmitry", c.name)
   }
 }
-

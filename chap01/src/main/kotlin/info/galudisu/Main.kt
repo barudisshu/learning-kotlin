@@ -1,8 +1,8 @@
 package info.galudisu
 
 fun main(args: Array<String>) {
-    println("Hello World!")
+  println("Hello World!")
 
-    // Try adding program arguments at Run/Debug configuration
-    println("Program arguments: ${args.joinToString()}")
+  // Try adding program arguments at Run/Debug configuration
+  println("Program arguments: ${args.joinToString()}")
 }

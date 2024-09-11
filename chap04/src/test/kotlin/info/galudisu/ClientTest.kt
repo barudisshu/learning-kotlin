@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class ClientTest {
-
   @Test
   fun `Universal object methods - toString()`() {
     val client = Client("Alice", 1234)
@@ -25,4 +24,3 @@ class ClientTest {
     assertTrue(processed.contains(Client("Alice", 1234)))
   }
 }
-

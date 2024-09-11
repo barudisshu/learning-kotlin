@@ -1,5 +1,4 @@
 object Libraries {
-
   // Classpath Gradle Plugin
   const val classpathKotlinGradle =
     "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN_VERSION}"
@@ -36,5 +35,4 @@ object Libraries {
   const val mockitoInline = "org.mockito:mockito-inline:${Versions.MOCKITO_VERSION}"
 
   const val mockk = "io.mockk:mockk:${Versions.MOCKK_VERSION}"
-
 }
