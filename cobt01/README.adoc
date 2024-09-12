@@ -1,3 +1,53 @@
 = Chapter 1: What Is Asynchronous Programming?
 
+:keywords: Asynchronous
+:description: What Is Asynchronous Programming?
+:url-repo: https://github.com/barudisshu/learning-kotlin.git
+:experimental:
 
+**用户界面(UI, user interface)**几乎是每个应用的一个基础部分。是指用户为了处理任务所看到的、交互的部分。通常情况下，是指应用做**复杂工作**， 例如和内部服务对话，或者处理数据库数据。然后，当工作完成后，并以某个消息的形式，展现**结果**。
+
+用户界面必须是**响应式的(responsive)**。如果正在处理的工作花费大量的时间来完成，那需要提供对用户的**反馈(feedback)**，这样他们不会觉得应用 被冻结了，致使它们不会合理地点击一个按钮 - 或可能认为功能没有在工作。
+
+In this chapter, you'll learn how to provide useful information to users about what's happening in the application and what different mechanisms exist for working with multiple tasks.
+You'll see what problems arise while trying to do complex and long-running synchronous operations and how asynchronous programming comes to the rescue.
+
+You'll start off by analyzing the flow of a function that deals with data processing and provides feedback to the user.
+
+== Providing feedback
+
+假设你有一个应用需要上传内容到网络上。当用户选择上传按钮，加载进度带(bar)或旋转按钮(spinner)出现，表示正在进行，应用没有停止工作。
+
+考虑如下任务，上传图片，并必须等待上传完成。
+
+.uploadImage
+[source,kotlin]
+----
+fun uploadImage(image: Image) {
+  showLoadingSpinner() // <1>
+  // Do some work
+  uploadService.upload(image) // <2>
+  // Work's done, hide the spinner
+  hideLoadingSpinner() // <3>
+}
+----
+
+初看，代码给出思路是：
+
+<1> 首先展示一个spinner
+<2> 上传图片
+<3> 当上传完成后，隐藏spinner
+
+不幸的是，它实际上没这么简单，因为spinner包含动画，
+
+.showLoadingSpinner
+[source,kotlin]
+----
+fun showLoadingSpinner() {
+  showSpinnerView()
+  while(running) {
+    rotateSpinnerImage()
+    delay()
+  }
+}
+----

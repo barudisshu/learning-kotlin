@@ -1,0 +1,7 @@
+:experimental:
+:myprojectbasedir: {asciidoctorconfigdir}
+:icons: font
+:source-highlighter: coderay
+:docinfo: shared
+:sectanchors:
+:ditaa-option-separation: false
