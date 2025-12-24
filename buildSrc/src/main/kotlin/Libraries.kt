@@ -35,4 +35,7 @@ object Libraries {
   const val mockitoInline = "org.mockito:mockito-inline:${Versions.MOCKITO_VERSION}"
 
   const val mockk = "io.mockk:mockk:${Versions.MOCKK_VERSION}"
+
+  const val kotestJunit5 = "io.kotest:kotest-runner-junit5:${Versions.KOTEST_VERSION}"
+  const val kotestProperty = "io.kotest:kotest-property:${Versions.KOTEST_VERSION}"
 }

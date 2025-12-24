@@ -6,9 +6,9 @@ repositories {
   gradlePluginPortal() // <2>
 }
 
-private val kotlinGradleVersion = "1.9.22"
-private val ktlintVersion = "12.1.0"
-private val spotbugsGradleVersion = "5.0.14"
+private val kotlinGradleVersion = "2.3.0"
+private val ktlintVersion = "14.0.1"
+private val spotbugsGradleVersion = "6.4.8"
 
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinGradleVersion")

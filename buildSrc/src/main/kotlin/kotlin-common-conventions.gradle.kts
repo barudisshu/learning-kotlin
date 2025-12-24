@@ -1,4 +1,5 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -19,8 +20,8 @@ plugins {
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+  sourceCompatibility = JavaVersion.VERSION_25
+  targetCompatibility = JavaVersion.VERSION_25
 }
 
 dependencies {
@@ -49,33 +50,22 @@ dependencies {
   testImplementation(Libraries.mockitoJupiter)
   testImplementation(Libraries.mockitoInline)
   testImplementation(Libraries.mockk)
-}
-
-tasks.withType<KotlinCompile> {
-  kotlinOptions {
-    freeCompilerArgs = listOf("-Xjsr305=strict")
-    jvmTarget = "17"
-    freeCompilerArgs = freeCompilerArgs + "-Xcontext-receivers"
-    kotlin {
-      sourceSets {
-        all {
-          languageSettings.optIn("kotlin.RequiresOptIn")
-        }
-      }
-    }
-  }
+  testImplementation(Libraries.kotestJunit5)
+  testImplementation(Libraries.kotestProperty)
 }
 
 kotlin {
-  jvmToolchain(17)
+  jvmToolchain(25)
   sourceSets.all {
     languageSettings {
-      languageVersion = "2.0"
+      languageVersion = "2.3"
     }
   }
   compilerOptions {
-    languageVersion.set(KotlinVersion.KOTLIN_2_0)
-    apiVersion.set(KotlinVersion.KOTLIN_2_0)
+    jvmTarget = JvmTarget.JVM_25
+    languageVersion.set(KotlinVersion.KOTLIN_2_3)
+    apiVersion.set(KotlinVersion.KOTLIN_2_3)
+    progressiveMode = true
   }
 }
 
